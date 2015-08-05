@@ -1,77 +1,123 @@
 <?php
 
-
-Stepper::addStep('étape 1', 1);
-Stepper::addStep('étape 2', 2);
-Stepper::addStep('étape 3', 3);
-
-
-Stepper::addStep(new Step('étape 1'), 1)
-
-
-
-
-
 namespace Axn\LaravelStepper;
 
 use Axn\LaravelStepper\Exception\MissingMandatoryParameterException;
+use Illuminate\Contracts\Foundation\Application;
 
-class Stepper
+abstract class Stepper
 {
-    protected $steps;
-
-    protected $numSteps;
-
-    protected $currentStep;
-
-    protected $currentStepPosition;
-
-    protected $computed;
+    /**
+     * The application instance.
+     *
+     * @var \Illuminate\Contracts\Foundation\Application
+     */
+    protected $app;
 
     /**
-     * Create a new stepper with a given current step.
+     * Steps stack.
+     *
+     * @var array
+     */
+    protected $steps = [];
+
+    /**
+     * Number of steps.
+     *
+     * @var integer
+     */
+    protected $numSteps = 0;
+
+    /**
+     * Name of the current step.
+     *
+     * @var string
+     */
+    protected $currentStep;
+
+    /**
+     * Index of the current step.
+     *
+     * @var integer
+     */
+    protected $currentStepPosition = 0;
+
+    /**
+     * Indicate if the stepper was computed.
+     *
+     * @var boolean
+     */
+    protected $computed = false;
+
+    /**
+     * Name of the default step.
+     *
+     * @var string
+     */
+    protected $defaultStepName = 'start';
+
+    /**
+     * Name of the step class to instanciate for each steps.
+     *
+     * @var string
+     */
+    protected $stepClass = 'Axn\LaravelStepper\Step';
+
+    /**
+     * Create a new stepper.
+     *
+     * @param \Illuminate\Contracts\Foundation\Application $app
+     */
+    public function __construct(Application $app)
+    {
+        $this->app = $app;
+    }
+
+    /**
+     * Register the steps of the stepper.
+     *
+     * @return void
+     */
+    abstract public function register();
+
+    /**
+     * Set the name of the current step.
      *
      * @param string $currentStep
-     * @param array $steps
      */
-    public function __construct($currentStep, array $steps = [])
+    public function setCurrentStep($currentStep)
     {
-        $this->steps = [];
-        $this->numSteps = 0;
-
         $this->currentStep = $currentStep;
-        $this->currentStepPosition = 0;
+    }
 
-        $this->computed = false;
-
-        if (!empty($steps)) {
-            $this->addStepsFromArray($steps);
+    /**
+     * Return the name of the current step.
+     *
+     * @return string
+     */
+    public function getCurrentStep()
+    {
+        if (null === $this->currentStep) {
+            $this->currentStep = $this->defaultStepName;
         }
+
+        return $this->currentStep;
     }
 
     /**
      * Add a step to the current stepper.
      *
      * @param string $name
-     * @param string $title
-     * @param integer $position
-     * @return \Axn\LaravelStepper\Stepper
+     * @param string $url
+     * @return \Axn\LaravelStepper\StepInterface
      */
-    public function addStep($name, $title = null, $position = null)
+    public function addStep($name, $url)
     {
-        if (null === $position) {
-            $position = $this->numSteps +1;
-        }
+        $step = $this->getStepInstance($name, $url);
 
-        $this->steps[] = new Step($name, $title, $position);
+        $step->setPosition($this->numSteps +1);
 
-        $step = new $app->config('stepper.step.class');
-
-        $this->numSteps++;
-
-        $this->computed = false;
-
-        return $this;
+        return $this->doAddStep($step);
     }
 
     /**
@@ -88,15 +134,38 @@ class Stepper
             if (!isset($step['name'])) {
                 throw new MissingMandatoryParameterException('The key "name" is missing to add the step.');
             }
+            elseif (!isset($step['url'])) {
+                throw new MissingMandatoryParameterException('The key "url" is missing to add the step.');
+            }
 
-            $this->addStep(
-                $step['name'],
-                isset($step['title']) ? $step['title'] : null,
-                isset($step['position']) ? $step['position'] : null
-            );
+            $this->addStep($step['name'], $step['url']);
         }
 
         return $this;
+    }
+
+    /**
+     * Return a given step by its name.
+     *
+     * @param string $stepName
+     * @return \Axn\LaravelStepper\StepInterface
+     */
+    public function getStep($stepName)
+    {
+        $return = null;
+
+        foreach ($this->aSteps as $step)
+        {
+            if ($step->getName() == $stepName)
+            {
+                $return = $step;
+                break;
+            }
+        }
+
+        reset($this->steps);
+
+        return $return;
     }
 
     /**
@@ -111,10 +180,14 @@ class Stepper
 
         foreach ($this->aSteps as $step)
         {
-            if ($step->getName() == $stepName) {
+            if ($step->getName() == $stepName)
+            {
                 $exists = true;
+                break;
             }
         }
+
+        reset($this->steps);
 
         return $exists;
     }
@@ -193,6 +266,29 @@ class Stepper
     }
 
     /**
+     *
+     * @param \Axn\LaravelStepper\StepInterface $step
+     */
+    final protected function doAddStep(StepInterface $step)
+    {
+        $this->computed = false;
+
+        $this->steps[] = $step;
+
+        $this->numSteps++;
+
+        return $step;
+    }
+
+    /**
+     * @return \Axn\LaravelStepper\StepInterface
+     */
+    protected function getStepInstance($name, $url)
+    {
+        return new $this->stepClass($name, $url);
+    }
+
+    /**
      * Compute the current stepper.
      *
      * @return boolean
@@ -243,13 +339,17 @@ class Stepper
     {
         foreach ($this->steps as $i => $step)
         {
-            if ($step->getName() == $this->currentStep)
+            if ($step->getName() == $this->getCurrentStep())
             {
                 $step->setCurrent();
 
                 $this->currentStepPosition = $i;
+
+                break;
             }
         }
+
+        reset($this->steps);
 
         return $this;
     }

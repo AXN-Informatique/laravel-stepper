@@ -4,13 +4,15 @@ namespace Axn\LaravelStepper;
 
 interface StepInterface
 {
+    public function __construct($name, $url);
+
     public function setName($name);
 
     public function getName();
 
-    public function setTitle($title = null);
+    public function setUrl($url);
 
-    public function getTitle();
+    public function getUrl();
 
     public function setPosition($position);
 
