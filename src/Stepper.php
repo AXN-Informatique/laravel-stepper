@@ -8,13 +8,6 @@ use Illuminate\Contracts\Foundation\Application;
 abstract class Stepper
 {
     /**
-     * The application instance.
-     *
-     * @var \Illuminate\Contracts\Foundation\Application
-     */
-    protected $app;
-
-    /**
      * Steps stack.
      *
      * @var array
@@ -63,14 +56,15 @@ abstract class Stepper
      */
     protected $stepClass = 'Axn\LaravelStepper\Step';
 
+    protected $view = 'prout';
+
     /**
      * Create a new stepper.
      *
-     * @param \Illuminate\Contracts\Foundation\Application $app
      */
-    public function __construct(Application $app)
+    public function __construct()
     {
-        $this->app = $app;
+        $this->register();
     }
 
     /**
@@ -198,33 +192,7 @@ abstract class Stepper
             $this->compute();
         }
 
-        // @todo: this should be defered to a customizable renderer
-        /*
-        $str = '<div class="ui-widget-content ui-corner-all" id="ariane">' . '	<ul class="step10">';
-
-        foreach ($this->aSteps as $i => $step)
-        {
-            $str .= '<li';
-
-            if ($step['current']) {
-                $str .= ' class="active"';
-            } elseif ($step['past']) {
-                $str .= ' class="past"';
-            }
-
-            if ($step['last']) {
-                $str .= ' id="lastStep"';
-            }
-
-            $url = !empty($step['url']) ? $step['url'] : '#';
-
-            $str .= '><span><a href="' . $url . '">' . ($i + 1) . '</a></span><a href="' . $url . '">' . $step['title'] . '</a></li>';
-        }
-
-        $str .= '	</ul>' . '	<div class="clearer"></div>' . '</div>';
-
-        return $str;
-        */
+        return view($this->view, ['stepper' => $this]);
     }
 
     /**
