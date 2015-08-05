@@ -2,7 +2,7 @@
 
 namespace Axn\LaravelStepper;
 
-class Step
+class Step implements StepInterface
 {
     private $name;
     private $position;
@@ -12,6 +12,7 @@ class Step
     private $first;
     private $last;
 
+    /*
     public function __construct($name, $title = null, $position = null, $current = false, $passed = false, $first = false, $last = false)
     {
         $this->setName($name);
@@ -24,10 +25,13 @@ class Step
         $this->setFirst($first);
         $this->setLast($last);
     }
+    */
 
     public function setName($name)
     {
         $this->name = $name;
+
+        return $this;
     }
 
     public function getName()
@@ -42,6 +46,8 @@ class Step
         if (null === $this->title) {
             $this->title = $this->getName();
         }
+
+        return $this;
     }
 
     public function getTitle()
@@ -52,6 +58,8 @@ class Step
     public function setPosition($position)
     {
         $this->position = (integer)$position;
+
+        return $this;
     }
 
     public function getPosition()
@@ -62,6 +70,8 @@ class Step
     public function setCurrent($current = true)
     {
         $this->current = $current;
+
+        return $this;
     }
 
     public function getCurrent()
@@ -77,6 +87,8 @@ class Step
     public function setPassed($passed = true)
     {
         $this->passed = $passed;
+
+        return $this;
     }
 
     public function getPassed()
@@ -92,6 +104,8 @@ class Step
     public function setFirst($first = true)
     {
         $this->first = $first;
+
+        return $this;
     }
 
     public function getFirst()
@@ -107,6 +121,8 @@ class Step
     public function setLast($last = true)
     {
         $this->last = $last;
+
+        return $this;
     }
 
     public function getLast()
@@ -117,5 +133,10 @@ class Step
     public function isLast()
     {
         return $this->getLast();
+    }
+
+    public function getNumber()
+    {
+        return $this->getPosition() + 1;
     }
 }

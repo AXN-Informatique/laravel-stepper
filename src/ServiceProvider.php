@@ -23,7 +23,18 @@ class ServiceProvider extends BaseServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bindShared('stepper', function($app) {
+            return new Stepper($app);
+        });
+
+        $this->mergeConfigFrom(
+            __DIR__ . '/../config/stepper.php', 'stepper'
+        );
+
+        $this->app->bind(
+            'Axn\LaravelStepper\StepInterface',
+            config('stepper.step.class')
+        );
     }
 
     /**
@@ -33,6 +44,8 @@ class ServiceProvider extends BaseServiceProvider
      */
     public function boot()
     {
-        //
+        $this->publishes([
+            __DIR__ . '/../config/stepper.php' => config_path('stepper.php'),
+        ]);
     }
 }

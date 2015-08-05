@@ -1,19 +1,39 @@
 <?php
 
+
+Stepper::addStep('étape 1', 1);
+Stepper::addStep('étape 2', 2);
+Stepper::addStep('étape 3', 3);
+
+
+Stepper::addStep(new Step('étape 1'), 1)
+
+
+
+
+
 namespace Axn\LaravelStepper;
 
 use Axn\LaravelStepper\Exception\MissingMandatoryParameterException;
 
 class Stepper
 {
-    private $steps;
+    protected $steps;
 
-    private $numSteps;
+    protected $numSteps;
 
-    private $currentStep;
+    protected $currentStep;
 
-    private $currentStepPosition;
+    protected $currentStepPosition;
 
+    protected $computed;
+
+    /**
+     * Create a new stepper with a given current step.
+     *
+     * @param string $currentStep
+     * @param array $steps
+     */
     public function __construct($currentStep, array $steps = [])
     {
         $this->steps = [];
@@ -22,11 +42,45 @@ class Stepper
         $this->currentStep = $currentStep;
         $this->currentStepPosition = 0;
 
+        $this->computed = false;
+
         if (!empty($steps)) {
             $this->addStepsFromArray($steps);
         }
     }
 
+    /**
+     * Add a step to the current stepper.
+     *
+     * @param string $name
+     * @param string $title
+     * @param integer $position
+     * @return \Axn\LaravelStepper\Stepper
+     */
+    public function addStep($name, $title = null, $position = null)
+    {
+        if (null === $position) {
+            $position = $this->numSteps +1;
+        }
+
+        $this->steps[] = new Step($name, $title, $position);
+
+        $step = new $app->config('stepper.step.class');
+
+        $this->numSteps++;
+
+        $this->computed = false;
+
+        return $this;
+    }
+
+    /**
+     * Add multiples steps from an array.
+     *
+     * @param array $steps
+     * @throws MissingMandatoryParameterException
+     * @return \Axn\LaravelStepper\Stepper
+     */
     public function addStepsFromArray(array $steps)
     {
         foreach ($steps as $step)
@@ -45,65 +99,34 @@ class Stepper
         return $this;
     }
 
-    public function addStep($name, $title = null, $position = null)
-    {
-        if (null === $position) {
-            $position = $this->numSteps +1;
-        }
-
-        $this->steps[] = new Step($name, $title, $position);
-
-        $this->numSteps++;
-
-        return $this;
-    }
-
-    protected function compute()
-    {
-        $this->sort();
-
-        # first pass to set current step
-        foreach ($this->steps as $i => $step)
-        {
-            if ($step->getName() == $this->currentStep)
-            {
-                $step->setCurrent();
-
-                $this->currentStepPosition = $i;
-            }
-        }
-
-        # second pass to set step metadata
-        foreach ($this->steps as $i => $step)
-        {
-            if ($i === 0) {
-                $step->setFirst();
-            }
-
-            if ($i < $this->currentStepPosition) {
-                $step->setPassed();
-            }
-
-            if ($i === $this->numSteps - 1) {
-                $step->setLast();
-            }
-        }
-    }
-
+    /**
+     * Indicate if a given step exists in the current stepper.
+     *
+     * @param string $stepName
+     * @return boolean
+     */
     public function stepExists($stepName)
     {
+        $exists = false;
+
         foreach ($this->aSteps as $step)
         {
             if ($step->getName() == $stepName) {
-                return true;
+                $exists = true;
             }
         }
 
-        return false;
+        return $exists;
     }
 
     public function display()
     {
+        if (!$this->computed) {
+            $this->compute();
+        }
+
+        // @todo: this should be defered to a customizable renderer
+        /*
         $str = '<div class="ui-widget-content ui-corner-all" id="ariane">' . '	<ul class="step10">';
 
         foreach ($this->aSteps as $i => $step)
@@ -128,31 +151,75 @@ class Stepper
         $str .= '	</ul>' . '	<div class="clearer"></div>' . '</div>';
 
         return $str;
+        */
     }
 
-    /*
+    /**
+     * Return previous step.
+     *
+     * @return \Axn\LaravelStepper\StepInterface|null
+     */
     public function getPrevStep()
     {
-        return isset($this->aSteps[($this->iCurrentStepPosition - 1)]['step']) ? $this->aSteps[($this->iCurrentStepPosition - 1)]['step'] : null;
+        return isset($this->steps[($this->currentStepPosition - 1)])
+            ? $this->steps[($this->currentStepPosition - 1)]
+            : null;
     }
 
+    /**
+     * Return current step.
+     *
+     * @return \Axn\LaravelStepper\StepInterface|null
+     */
     public function getCurrentStep()
     {
-        return isset($this->aSteps[$this->iCurrentStepPosition]['step']) ? $this->aSteps[$this->iCurrentStepPosition]['step'] : null;
+        return
+            isset($this->steps[$this->currentStepPosition])
+            ? $this->steps[$this->currentStepPosition]
+            : null;
     }
 
+    /**
+     * Return next step.
+     *
+     * @return \Axn\LaravelStepper\StepInterface|null
+     */
     public function getNextStep()
     {
-        return isset($this->aSteps[($this->iCurrentStepPosition + 1)]['step']) ? $this->aSteps[($this->iCurrentStepPosition + 1)]['step'] : null;
+        return
+            isset($this->steps[($this->currentStepPosition + 1)])
+            ? $this->steps[($this->currentStepPosition + 1)]
+            : null;
     }
-    */
+
+    /**
+     * Compute the current stepper.
+     *
+     * @return boolean
+     */
+    protected function compute()
+    {
+        if ($this->computed) {
+            return false;
+        }
+
+        $this->sortSteps();
+
+        $this->computeCurrentStep();
+
+        $this->computeSteps();
+
+        $this->computed = true;
+
+        return true;
+    }
 
     /**
      * Sort step by position.
      *
-     * @return void
+     * @return \Axn\LaravelStepper\Stepper
      */
-    protected function sort()
+    protected function sortSteps()
     {
         uasort($this->steps, function ($a, $b) {
             if ($a->getPosition() == $b->getPosition()) {
@@ -163,5 +230,52 @@ class Stepper
         });
 
         $this->steps = array_values($this->steps);
+
+        return $this;
+    }
+
+    /**
+     * Set current step for the current stepper.
+     *
+     * @return \Axn\LaravelStepper\Stepper
+     */
+    protected function computeCurrentStep()
+    {
+        foreach ($this->steps as $i => $step)
+        {
+            if ($step->getName() == $this->currentStep)
+            {
+                $step->setCurrent();
+
+                $this->currentStepPosition = $i;
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set the status of the various steps for the current stepper.
+     *
+     * @return \Axn\LaravelStepper\Stepper
+     */
+    protected function computeSteps()
+    {
+        foreach ($this->steps as $i => $step)
+        {
+            if ($i === 0) {
+                $step->setFirst();
+            }
+
+            if ($i < $this->currentStepPosition) {
+                $step->setPassed();
+            }
+
+            if ($i === $this->numSteps - 1) {
+                $step->setLast();
+            }
+        }
+
+        return $this;
     }
 }
