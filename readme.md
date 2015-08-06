@@ -4,6 +4,11 @@ Permet de créer un outil de visualisation de l'avancement par étapes de ce typ
 
 ![laravel-stepper.png](https://bitbucket.org/repo/bd8dx5/images/2350313328-laravel-stepper.png)
 
+* [Installation](#markdown-header-installation)
+* [Utilisation](#markdown-header-utilisation)
+* [Personnaliser le template](#markdown-header-personnaliser-le-template) 
+* [Personnaliser les classes](#markdown-header-personnaliser-les-classes) 
+
 ## Installation
 
 Requérir ce paquet dans votre composer.json :
@@ -123,3 +128,7 @@ php artisan vendor:publish
 ```
 
 Après cela vous trouverez les templates dans ``resources/views/vendor/stepper/`` ; il vous sera alors très simple de les modifier.
+
+## Personnaliser les classes
+
+:interrobang: à terminer
