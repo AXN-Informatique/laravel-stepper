@@ -3,9 +3,10 @@
 namespace Axn\LaravelStepper;
 
 use ArrayAccess;
+use Countable;
 use Iterator;
 
-abstract class Stepper implements ArrayAccess, Iterator
+abstract class Stepper implements ArrayAccess, Countable, Iterator
 {
     /**
      * Steps stack.
@@ -79,11 +80,21 @@ abstract class Stepper implements ArrayAccess, Iterator
     abstract public function register();
 
     /**
+     * Return the number of registred steps.
+     *
+     * @return integer
+     */
+    public function getNumSteps()
+    {
+        return $this->numSteps;
+    }
+
+    /**
      * Set the name of the current step.
      *
      * @param string $currentStep
      */
-    public function setCurrentStep($currentStep)
+    public function setCurrentStepName($currentStep)
     {
         $this->currentStep = $currentStep;
     }
@@ -93,7 +104,7 @@ abstract class Stepper implements ArrayAccess, Iterator
      *
      * @return string
      */
-    public function getCurrentStep()
+    public function getCurrentStepName()
     {
         if (null === $this->currentStep) {
             $this->currentStep = $this->defaultStepName;
@@ -113,7 +124,7 @@ abstract class Stepper implements ArrayAccess, Iterator
     {
         $step = $this->getStepInstance($name, $url);
 
-        $step->setPosition($this->numSteps +1);
+        $step->setPosition($this->numSteps + 1);
 
         return $this->doAddStep($step);
     }
@@ -313,7 +324,7 @@ abstract class Stepper implements ArrayAccess, Iterator
     {
         foreach ($this->steps as $i => $step)
         {
-            if ($step->getName() == $this->getCurrentStep())
+            if ($step->getName() == $this->getCurrentStepName())
             {
                 $step->setCurrent();
 
@@ -379,6 +390,15 @@ abstract class Stepper implements ArrayAccess, Iterator
     public function offsetGet($offset)
     {
         return isset($this->steps[$offset]) ? $this->steps[$offset] : null;
+    }
+
+    /*
+     * Countable implementation
+     */
+
+    public function count()
+    {
+        return $this->getNumSteps();
     }
 
     /*
