@@ -83,7 +83,43 @@ La classe étant injectée par le conteneur IoC, elle est instanciée et la mét
 
 ## Personnaliser le template
 
-- publish
-- class attribute
+### Changer de template
 
-Deux 
+Ce package fournis plusieurs templates, par défaut c'est le template "default" qui est utilisé. Pour utiliser le template "arrows" il suffit d'ajouter à votre classe de stepper le nom du template à utiliser :
+
+
+```php
+use Axn\LaravelStepper\Stepper;
+
+class BasicStepper extends Stepper
+{
+    protected $view = 'stepper::arrows';
+    //...
+}
+```
+
+Et le tour est joué !
+
+Évidement, de façon très classique, vous pouvez utiliser n'importe quelle vue du système de templates. Par exemple pour utiliser le template ``resources/views/partials/steppers/custom.blade.php`` indiquez dans votre classe :
+
+```php
+use Axn\LaravelStepper\Stepper;
+
+class BasicStepper extends Stepper
+{
+    protected $view = 'partials.steppers.custom';
+    //...
+}
+```
+
+### Personnaliser un template
+
+Il est possible de partir d'un des templates fourni par le package et de le modifier. Pour cela il faut publier les templates puis les modifier.
+
+Pour publier les templates lancez la commande suivante :
+
+```
+php artisan vendor:publish
+```
+
+Après cela vous trouverez les templates dans ``resources/views/vendor/stepper/`` ; il vous sera alors très simple de les modifier.
