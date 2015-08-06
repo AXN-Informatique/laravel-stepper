@@ -1,12 +1,12 @@
 {
-	"name" : "axn/laravel-stepper",
-	"minimum-stability" : "stable",
-	"require" : {
-		"illuminate/support" : "~5.0"
-	},
-	"autoload" : {
-		"psr-4" : {
-			"Axn\\LaravelStepper" : "src"
-		}
-	}
+    "name" : "axn/laravel-stepper",
+    "minimum-stability" : "stable",
+    "require" : {
+        "illuminate/support" : "~5.0"
+    },
+    "autoload" : {
+        "psr-4" : {
+            "Axn\\LaravelStepper\\" : "src/"
+        }
+    }
 }
