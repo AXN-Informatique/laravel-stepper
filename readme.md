@@ -1,6 +1,6 @@
 # Laravel Stepper
 
-Permet de créer un outil de visualisation de l'avancement par étapes.
+Permet de créer un outil de visualisation de l'avancement par étapes de ce type :
 
 ![laravel-stepper.png](https://bitbucket.org/repo/bd8dx5/images/2350313328-laravel-stepper.png)
 
