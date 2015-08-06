@@ -78,4 +78,12 @@ Ensuite, nous pouvons injecter cette classe dans les méthodes de controlleur :
     //...
 ```
 
-La classe étant injectée par le conteneur IoC, elle est instanciée et la méthode ``register()`` est automatiquement invoquée. Ensuite nous indiquons au stepper qu'elle est l'étape courante ``$stepper->setCurrentStepName('step 3')``. Enfin, nous passons à la vu le rendu du stepper.
+La classe étant injectée par le conteneur IoC, elle est instanciée et la méthode ``register()`` est automatiquement invoquée. Ensuite nous indiquons au stepper qu'elle est l'étape courante ``$stepper->setCurrentStepName('step 3')``. Enfin, nous passons à la vue le rendu du stepper dans laquelle nous pourrons simplement mettre ``{!! $stepper !!}``.
+
+
+## Personnaliser le template
+
+- publish
+- class attribute
+
+Deux 
