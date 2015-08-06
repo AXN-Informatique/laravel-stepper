@@ -1,6 +1,8 @@
 
 <style>
 <!--
+/* Source : http://blog.sathomas.me/post/tracking-progress-in-pure-css */
+
 ol.stepper {
     margin: 0;
     padding: 0;
