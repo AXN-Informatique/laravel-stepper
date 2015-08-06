@@ -2,6 +2,8 @@
 
 Permet de créer un outil de visualisation de l'avancement par étapes.
 
+![laravel-stepper.png](https://bitbucket.org/repo/bd8dx5/images/2350313328-laravel-stepper.png)
+
 ## Installation
 
 Requérir ce paquet dans votre composer.json :
@@ -77,7 +79,3 @@ Ensuite, nous pouvons injecter cette classe dans les méthodes de controlleur :
 ```
 
 La classe étant injectée par le conteneur IoC, elle est instanciée et la méthode ``register()`` est automatiquement invoquée. Ensuite nous indiquons au stepper qu'elle est l'étape courante ``$stepper->setCurrentStepName('step 3')``. Enfin, nous passons à la vu le rendu du stepper.
-
-
-
-
