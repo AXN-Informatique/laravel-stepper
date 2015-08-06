@@ -192,7 +192,7 @@ abstract class Stepper implements ArrayAccess, Iterator
         return $exists;
     }
 
-    public function display()
+    public function render()
     {
         if (!$this->computed) {
             $this->compute();
