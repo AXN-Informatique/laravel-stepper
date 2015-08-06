@@ -2,10 +2,10 @@
 
 namespace Axn\LaravelStepper;
 
-use Axn\LaravelStepper\Exception\MissingMandatoryParameterException;
-use Illuminate\Contracts\Foundation\Application;
+use ArrayAccess;
+use Iterator;
 
-abstract class Stepper
+abstract class Stepper implements ArrayAccess, Iterator
 {
     /**
      * Steps stack.
@@ -56,7 +56,11 @@ abstract class Stepper
      */
     protected $stepClass = 'Axn\LaravelStepper\Step';
 
-    protected $view = 'prout';
+    /**
+     * Name of the view to use.
+     * @var string
+     */
+    protected $view = 'stepper::default';
 
     /**
      * Create a new stepper.
@@ -153,11 +157,12 @@ abstract class Stepper
             if ($step->getName() == $stepName)
             {
                 $return = $step;
+
+                $this->rewind();
+
                 break;
             }
         }
-
-        reset($this->steps);
 
         return $return;
     }
@@ -177,11 +182,12 @@ abstract class Stepper
             if ($step->getName() == $stepName)
             {
                 $exists = true;
+
+                $this->rewind();
+
                 break;
             }
         }
-
-        reset($this->steps);
 
         return $exists;
     }
@@ -313,11 +319,11 @@ abstract class Stepper
 
                 $this->currentStepPosition = $i;
 
+                $this->rewind();
+
                 break;
             }
         }
-
-        reset($this->steps);
 
         return $this;
     }
@@ -345,5 +351,67 @@ abstract class Stepper
         }
 
         return $this;
+    }
+
+    /*
+     * ArrayAccess implementation
+     */
+
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            $this->steps[] = $value;
+        } else {
+            $this->steps[$offset] = $value;
+        }
+    }
+
+    public function offsetExists($offset)
+    {
+        return isset($this->steps[$offset]);
+    }
+
+    public function offsetUnset($offset)
+    {
+        unset($this->steps[$offset]);
+    }
+
+    public function offsetGet($offset)
+    {
+        return isset($this->steps[$offset]) ? $this->steps[$offset] : null;
+    }
+
+    /*
+     * Iterator implementation
+     */
+
+    public function rewind()
+    {
+        return reset($this->steps);
+    }
+
+    public function current()
+    {
+        return current($this->steps);
+    }
+
+    public function key()
+    {
+        return key($this->steps);
+    }
+
+    public function prev()
+    {
+        return prev($this->steps);
+    }
+
+    public function next()
+    {
+        return next($this->steps);
+    }
+
+    public function valid()
+    {
+        return key($this->steps) !== null;
     }
 }

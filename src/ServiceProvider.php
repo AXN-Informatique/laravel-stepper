@@ -23,6 +23,10 @@ class ServiceProvider extends BaseServiceProvider
      */
     public function boot()
     {
+        $this->loadViewsFrom(__DIR__ . '/../resources/views/', 'stepper');
 
+        $this->publishes([
+            __DIR__ . '/../resources/views/' => base_path('resources/views/vendor/stepper'),
+        ]);
     }
 }

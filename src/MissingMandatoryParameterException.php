@@ -1,6 +1,6 @@
 <?php
 
-namespace Axn\LaravelStepper\Exception;
+namespace Axn\LaravelStepper;
 
 class MissingMandatoryParameterException extends \InvalidArgumentException
 {
