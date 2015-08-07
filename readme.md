@@ -8,6 +8,8 @@ Permet de créer un outil de visualisation de l'avancement par étapes de ce typ
 * [Utilisation](#markdown-header-utilisation)
 * [Personnaliser le template](#markdown-header-personnaliser-le-template)
 * [Personnaliser les classes](#markdown-header-personnaliser-les-classes)
+* [changelog](changelog.md)
+
 
 ## Installation
 
