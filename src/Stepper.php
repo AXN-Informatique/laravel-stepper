@@ -117,12 +117,11 @@ abstract class Stepper implements ArrayAccess, Countable, Iterator
      * Add a step to the current stepper.
      *
      * @param string $name
-     * @param string $url
      * @return \Axn\LaravelStepper\StepInterface
      */
-    public function addStep($name, $url)
+    public function addStep($name)
     {
-        $step = $this->getStepInstance($name, $url);
+        $step = $this->getStepInstance($name);
 
         $step->setPosition($this->numSteps + 1);
 
@@ -143,11 +142,8 @@ abstract class Stepper implements ArrayAccess, Countable, Iterator
             if (!isset($step['name'])) {
                 throw new MissingMandatoryParameterException('The key "name" is missing to add the step.');
             }
-            elseif (!isset($step['url'])) {
-                throw new MissingMandatoryParameterException('The key "url" is missing to add the step.');
-            }
 
-            $this->addStep($step['name'], $step['url']);
+            $this->addStep($step['name']);
         }
 
         return $this;
@@ -268,9 +264,9 @@ abstract class Stepper implements ArrayAccess, Countable, Iterator
     /**
      * @return \Axn\LaravelStepper\StepInterface
      */
-    protected function getStepInstance($name, $url)
+    protected function getStepInstance($name)
     {
-        return new $this->stepClass($name, $url);
+        return new $this->stepClass($name);
     }
 
     /**

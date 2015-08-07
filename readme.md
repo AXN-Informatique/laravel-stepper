@@ -6,8 +6,8 @@ Permet de créer un outil de visualisation de l'avancement par étapes de ce typ
 
 * [Installation](#markdown-header-installation)
 * [Utilisation](#markdown-header-utilisation)
-* [Personnaliser le template](#markdown-header-personnaliser-le-template) 
-* [Personnaliser les classes](#markdown-header-personnaliser-les-classes) 
+* [Personnaliser le template](#markdown-header-personnaliser-le-template)
+* [Personnaliser les classes](#markdown-header-personnaliser-les-classes)
 
 ## Installation
 
@@ -52,11 +52,11 @@ class BasicStepper extends Stepper
 {
     public function register()
     {
-        $this->addStep('step 1', '/step-1');
-        $this->addStep('step 2', '/step-2');
-        $this->addStep('step 3', '/step-3');
-        $this->addStep('step 4', '/step-4');
-        $this->addStep('step 5', '/step-5');
+        $this->addStep('step 1');
+        $this->addStep('step 2');
+        $this->addStep('step 3');
+        $this->addStep('step 4');
+        $this->addStep('step 5');
     }
 }
 ```
@@ -90,7 +90,7 @@ La classe étant injectée par le conteneur IoC, elle est instanciée et la mét
 
 ### Changer de template
 
-Ce package fournis plusieurs templates, par défaut c'est le template "default" qui est utilisé. Pour utiliser le template "arrows" il suffit d'ajouter à votre classe de stepper le nom du template à utiliser :
+Ce package fournis plusieurs templates, par défaut c'est le template... "default" qui est utilisé. Pour utiliser le template "arrows" il suffit d'ajouter à votre classe de stepper le nom du template à utiliser :
 
 
 ```php
@@ -119,7 +119,9 @@ class BasicStepper extends Stepper
 
 ### Personnaliser un template
 
-Il est possible de partir d'un des templates fourni par le package et de le modifier. Pour cela il faut publier les templates puis les modifier.
+Les templates fournis sont plus des exemples pour comprendre comment utiliser le paquet que des templates à utiliser en production. Par exemple ils embarquent les styles CSS, ce qui n'est pas la meilleure des pratiques...
+
+Il est donc possible de partir d'un de ces templates fournis par le package et de le modifier. Pour cela il faut publier les templates puis les modifier.
 
 Pour publier les templates lancez la commande suivante :
 
@@ -127,7 +129,8 @@ Pour publier les templates lancez la commande suivante :
 php artisan vendor:publish
 ```
 
-Après cela vous trouverez les templates dans ``resources/views/vendor/stepper/`` ; il vous sera alors très simple de les modifier.
+Après cela vous trouverez les templates dans ``resources/views/vendor/stepper/`` ; il vous sera alors très simple de les modifier selon vos besoins.
+
 
 ## Personnaliser les classes
 

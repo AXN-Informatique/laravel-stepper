@@ -6,27 +6,27 @@ class Step implements StepInterface
 {
     private $name;
 
+    private $position;
+
     private $url;
 
-    private $position;
+    private $route;
 
     private $title;
 
-    private $current;
+    private $description;
 
-    private $passed;
+    private $current = false;
 
-    private $first;
+    private $passed = false;
 
-    private $last;
+    private $first = false;
 
-    public function __construct($name, $url, $position = null)
+    private $last = false;
+
+    public function __construct($name)
     {
         $this->setName($name);
-
-        $this->setUrl($url);
-
-        $this->setPosition($position);
     }
 
     public function setName($name)
@@ -41,18 +41,6 @@ class Step implements StepInterface
         return $this->name;
     }
 
-    public function setUrl($url)
-    {
-        $this->url = $url;
-
-        return $this;
-    }
-
-    public function getUrl()
-    {
-        return $this->url;
-    }
-
     public function setPosition($position)
     {
         $this->position = (integer)$position;
@@ -65,6 +53,30 @@ class Step implements StepInterface
         return $this->position;
     }
 
+    public function setUrl($url)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    public function setRoute($route)
+    {
+        $this->route = $route;
+
+        return $this;
+    }
+
+    public function getRoute()
+    {
+        return $this->route;
+    }
+
     public function setTitle($title)
     {
         $this->title = $title;
@@ -75,6 +87,18 @@ class Step implements StepInterface
     public function getTitle()
     {
         return $this->title;
+    }
+
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getDescription()
+    {
+        return $this->description;
     }
 
     public function setCurrent($current = true)
@@ -143,10 +167,5 @@ class Step implements StepInterface
     public function isLast()
     {
         return $this->getLast();
-    }
-
-    public function getNumber()
-    {
-        return $this->getPosition() + 1;
     }
 }

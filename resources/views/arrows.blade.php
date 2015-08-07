@@ -1,11 +1,14 @@
-<style>
+{{--
+
+Une autre façon de présenter les choses...
+
+Sources :
+    - http://jsfiddle.net/jermartin77/vmc3e/
+
+--}}
+
+<style type="text/css">
 <!--
-/* Source : http://jsfiddle.net/jermartin77/vmc3e/ */
-
-* {
-    box-sizing: border-box;
-}
-
 #stepper {
     padding: 0;
     list-style-type: none;
@@ -25,7 +28,6 @@
     position: relative;
     border-top: 1px solid #666;
     border-bottom: 1px solid #666;
-    width: 32%;
     margin: 0 1px;
 }
 
