@@ -1,8 +1,0 @@
-
-Des idées de mises en forme :
-
-http://blog.sathomas.me/post/tracking-progress-in-pure-css
-
-http://www.cssscript.com/demo/responsive-step-progress-indicator-with-pure-css/
-
-http://jsfiddle.net/jermartin77/vmc3e/
