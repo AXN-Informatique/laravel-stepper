@@ -110,8 +110,6 @@ abstract class Stepper implements ArrayAccess, Countable, Iterator
      */
     public function getCurrentStepName()
     {
-        $this->compute();
-
         if (null === $this->currentStep) {
             $this->currentStep = $this->defaultStepName;
         }
