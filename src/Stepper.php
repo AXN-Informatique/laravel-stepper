@@ -86,6 +86,8 @@ abstract class Stepper implements ArrayAccess, Countable, Iterator
      */
     public function getNumSteps()
     {
+        $this->compute();
+
         return $this->numSteps;
     }
 
@@ -97,6 +99,8 @@ abstract class Stepper implements ArrayAccess, Countable, Iterator
     public function setCurrentStepName($currentStep)
     {
         $this->currentStep = $currentStep;
+
+        $this->computed = false;
     }
 
     /**
@@ -106,6 +110,8 @@ abstract class Stepper implements ArrayAccess, Countable, Iterator
      */
     public function getCurrentStepName()
     {
+        $this->compute();
+
         if (null === $this->currentStep) {
             $this->currentStep = $this->defaultStepName;
         }
@@ -150,6 +156,33 @@ abstract class Stepper implements ArrayAccess, Countable, Iterator
     }
 
     /**
+     * Indicate if a given step exists in the current stepper.
+     *
+     * @param string $stepName
+     * @return boolean
+     */
+    public function stepExists($stepName)
+    {
+        $this->compute();
+
+        $exists = false;
+
+        foreach ($this->aSteps as $step)
+        {
+            if ($step->getName() == $stepName)
+            {
+                $exists = true;
+
+                $this->rewind();
+
+                break;
+            }
+        }
+
+        return $exists;
+    }
+
+    /**
      * Return a given step by its name.
      *
      * @param string $stepName
@@ -157,6 +190,8 @@ abstract class Stepper implements ArrayAccess, Countable, Iterator
      */
     public function getStep($stepName)
     {
+        $this->compute();
+
         $return = null;
 
         foreach ($this->aSteps as $step)
@@ -175,46 +210,14 @@ abstract class Stepper implements ArrayAccess, Countable, Iterator
     }
 
     /**
-     * Indicate if a given step exists in the current stepper.
-     *
-     * @param string $stepName
-     * @return boolean
-     */
-    public function stepExists($stepName)
-    {
-        $exists = false;
-
-        foreach ($this->aSteps as $step)
-        {
-            if ($step->getName() == $stepName)
-            {
-                $exists = true;
-
-                $this->rewind();
-
-                break;
-            }
-        }
-
-        return $exists;
-    }
-
-    public function render()
-    {
-        if (!$this->computed) {
-            $this->compute();
-        }
-
-        return view($this->view, ['stepper' => $this]);
-    }
-
-    /**
      * Return previous step.
      *
      * @return \Axn\LaravelStepper\StepInterface|null
      */
     public function getPrevStep()
     {
+        $this->compute();
+
         return isset($this->steps[($this->currentStepPosition - 1)])
             ? $this->steps[($this->currentStepPosition - 1)]
             : null;
@@ -227,6 +230,8 @@ abstract class Stepper implements ArrayAccess, Countable, Iterator
      */
     public function getCurrentStep()
     {
+        $this->compute();
+
         return
             isset($this->steps[$this->currentStepPosition])
             ? $this->steps[$this->currentStepPosition]
@@ -240,10 +245,19 @@ abstract class Stepper implements ArrayAccess, Countable, Iterator
      */
     public function getNextStep()
     {
+        $this->compute();
+
         return
             isset($this->steps[($this->currentStepPosition + 1)])
             ? $this->steps[($this->currentStepPosition + 1)]
             : null;
+    }
+
+    public function render()
+    {
+        $this->compute();
+
+        return view($this->view, ['stepper' => $this]);
     }
 
     /**
@@ -276,7 +290,7 @@ abstract class Stepper implements ArrayAccess, Countable, Iterator
      */
     protected function compute()
     {
-        if ($this->computed) {
+        if (true === $this->computed) {
             return false;
         }
 

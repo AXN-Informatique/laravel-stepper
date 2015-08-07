@@ -10,6 +10,7 @@
 - les attributs de la classe Step de type boolean ne sont plus null
 - la propriété "url" n'est plus obligatoire
 - amélioration de la documentation
+- appels à Stepper::compute() plus judicieux
 
 ---
 
