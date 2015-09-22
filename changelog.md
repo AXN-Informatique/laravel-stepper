@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+1.2.0
+-----
+
+- add Stepper::getDefaultStep() method
+
+---
+
+
 1.1.0
 -----
 

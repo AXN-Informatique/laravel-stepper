@@ -251,6 +251,18 @@ abstract class Stepper implements ArrayAccess, Countable, Iterator
             : null;
     }
 
+    /**
+     * Return default step.
+     *
+     * @return \Axn\LaravelStepper\StepInterface|null
+     */
+    public function getDefaultStep()
+    {
+        $this->setCurrentStepName($this->defaultStepName);
+
+        return $this->getCurrentStep();
+    }
+
     public function render()
     {
         $this->compute();
