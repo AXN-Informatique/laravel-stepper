@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+1.2.1
+-----
+
+- fix Stepper::stepExists() and Stepper::getStep() methods
+
+---
+
+
 1.2.0
 -----
 

@@ -165,7 +165,7 @@ abstract class Stepper implements ArrayAccess, Countable, Iterator
 
         $exists = false;
 
-        foreach ($this->aSteps as $step)
+        foreach ($this->steps as $step)
         {
             if ($step->getName() == $stepName)
             {
@@ -192,7 +192,7 @@ abstract class Stepper implements ArrayAccess, Countable, Iterator
 
         $return = null;
 
-        foreach ($this->aSteps as $step)
+        foreach ($this->steps as $step)
         {
             if ($step->getName() == $stepName)
             {
