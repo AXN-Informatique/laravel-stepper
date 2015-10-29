@@ -17,7 +17,7 @@ Requérir ce paquet dans votre composer.json :
 
 ```
     "require" : {
-        "axn/laravel-stepper" : "~1.0"
+        "axn/laravel-stepper" : "~1.0.0"
     }
 ```
 
