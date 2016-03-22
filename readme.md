@@ -13,31 +13,13 @@ Permet de créer un outil de visualisation de l'avancement par étapes de ce typ
 
 ## Installation
 
-Requérir ce paquet dans votre composer.json :
+Inclure le package avec Composer :
 
 ```
-    "require" : {
-        "axn/laravel-stepper" : "~1.0.0"
-    }
+composer require axn/laravel-stepper
 ```
 
-Ajouter le dépôt privé à votre composer.json :
-
-```
-    "repositories" : [{
-            "type" : "vcs",
-            "url" : "git@bitbucket.org:axn/laravel-stepper.git"
-        }
-    ]
-```
-
-Vous aurez besoin d'une clé SSH pour exécuter la commande suivante :
-
-```
-composer update
-```
-
-Après la mise à jour composer, ajouter le ServiceProvider au tableau de providers dans config/app.php
+Ajouter le ServiceProvider au tableau de providers dans config/app.php
 
 ```
 'Axn\LaravelStepper\ServiceProvider',
