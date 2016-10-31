@@ -1,14 +1,11 @@
 # Laravel Stepper
 
-Permet de créer un outil de visualisation de l'avancement par étapes de ce type :
-
-![laravel-stepper.png](https://bitbucket.org/repo/bd8dx5/images/2350313328-laravel-stepper.png)
+Permet de créer un outil de visualisation de l'avancement étape par étape.
 
 * [Installation](#markdown-header-installation)
 * [Utilisation](#markdown-header-utilisation)
 * [Personnaliser le template](#markdown-header-personnaliser-le-template)
 * [Personnaliser les classes](#markdown-header-personnaliser-les-classes)
-* [changelog](changelog.md) :arrow_upper_right:
 
 
 ## Installation

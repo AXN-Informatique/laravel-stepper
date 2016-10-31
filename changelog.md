@@ -1,4 +1,10 @@
-# CHANGELOG
+CHANGELOG
+=========
+
+1.2.4
+-----
+
+- Move to Github
 
 1.2.3
 -----
