@@ -2,10 +2,10 @@
 
 Permet de créer un outil de visualisation de l'avancement étape par étape.
 
-* [Installation](#markdown-header-installation)
-* [Utilisation](#markdown-header-utilisation)
-* [Personnaliser le template](#markdown-header-personnaliser-le-template)
-* [Personnaliser les classes](#markdown-header-personnaliser-les-classes)
+* [Installation](#installation)
+* [Utilisation](#utilisation)
+* [Personnaliser le template](#personnaliser-le-template)
+* [Personnaliser les classes](#personnaliser-les-classes)
 
 
 ## Installation
