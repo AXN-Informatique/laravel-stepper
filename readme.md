@@ -6,11 +6,13 @@ Package that let you create a progress visualization tool step by step (stepper)
 - **Website:** [http://www.axn-informatique.com/](http://www.axn-informatique.com/)
 - **Version:** 1.2.4
 - **License:** MIT license (see the license file)
+_____________________________________________________________________________________
 
 * [Installation](#installation)
-* [Usage](#utilisation)
-* [Personalize the template](#personnaliser-le-template)
-* [Personalize classes](#personnaliser-les-classes)
+* [Usage](#usage)
+* [Personalize the template](#personalize-the-template)
+* [Personalize classes](#personalize-classes)
+
 
 ## Installation
 
