@@ -1,30 +1,34 @@
 # Laravel Stepper
 
-Permet de créer un outil de visualisation de l'avancement étape par étape.
+Package that let you create a progress visualization tool step by step (stepper).
+
+- **Author:** AXN Informatique
+- **Website:** [http://www.axn-informatique.com/](http://www.axn-informatique.com/)
+- **Version:** 1.2.4
+- **License:** MIT license (see the license file)
 
 * [Installation](#installation)
-* [Utilisation](#utilisation)
-* [Personnaliser le template](#personnaliser-le-template)
-* [Personnaliser les classes](#personnaliser-les-classes)
-
+* [Usage](#utilisation)
+* [Personalize the template](#personnaliser-le-template)
+* [Personalize classes](#personnaliser-les-classes)
 
 ## Installation
 
-Inclure le package avec Composer :
+To install Laravel Stepper as a Composer package to be used with Laravel 5, simply run:
 
 ```
 composer require axn/laravel-stepper
 ```
 
-Ajouter le ServiceProvider au tableau de providers dans config/app.php
+Once it's installed, you can register the service provider in `config/app.php`:
 
 ```
 'Axn\LaravelStepper\ServiceProvider',
 ```
 
-## Utilisation
+## Usage
 
-Comme le stepper va être utilisé sur plusieurs pages, et qu'il peut y avoir plusieurs stepper par application, nous allons le définir dans une classe dédiée :
+The stepper is going to be used on several pages. There might be several steppers per application, that's why a stepper has to be defined in a dedicated class:  
 
 ```php
 use Axn\LaravelStepper\Stepper;
@@ -42,12 +46,12 @@ class BasicStepper extends Stepper
 }
 ```
 
-Ce qui est important de noter au sujet de cette classe :
-  - elle étends la classe abstraite ``Axn\LaravelStepper\Stepper``
-  - elle implémente la méthode ``register()``
-  - dans cette méthode nous définissons les différentes étapes
+What's important about that class :
+  - It extends the abscract class : ``Axn\LaravelStepper\Stepper``
+  - It's implementing the ``register()`` method
+  - It's in that method, that all the different steps are defined
 
-Ensuite, nous pouvons injecter cette classe dans les méthodes de controlleur :
+Then, we can inject this class into controller's methods : 
 
 ```php
     //...
@@ -64,15 +68,16 @@ Ensuite, nous pouvons injecter cette classe dans les méthodes de controlleur :
     //...
 ```
 
-La classe étant injectée par le conteneur IoC, elle est instanciée et la méthode ``register()`` est automatiquement invoquée. Ensuite nous indiquons au stepper qu'elle est l'étape courante ``$stepper->setCurrentStepName('step 3')``. Enfin, nous passons à la vue le rendu du stepper dans laquelle nous pourrons simplement mettre ``{!! $stepper !!}``.
+Because the class is injected by the IoC container, it's instanciated and the ``register()`` is automatically called. 
+After that it's necessary to precise to the stepper which step is the current one : ``$stepper->setCurrentStepName('step 3')``.
+Then the rendering of the stepper will be transmitted to the view in which you can simply put : ``{!! $stepper !!}``.
 
+## Personalize the template
 
-## Personnaliser le template
+### Change the template
 
-### Changer de template
-
-Ce package fournis plusieurs templates, par défaut c'est le template... "default" qui est utilisé. Pour utiliser le template "arrows" il suffit d'ajouter à votre classe de stepper le nom du template à utiliser :
-
+This package provides several templates. By default, the template "default" is used.
+To use the template "arrows", you need to add to the stepper class the name of the template to use: 
 
 ```php
 use Axn\LaravelStepper\Stepper;
@@ -84,9 +89,9 @@ class BasicStepper extends Stepper
 }
 ```
 
-Et le tour est joué !
+That's it!
 
-Évidement, de façon très classique, vous pouvez utiliser n'importe quelle vue du système de templates. Par exemple pour utiliser le template ``resources/views/partials/steppers/custom.blade.php`` indiquez dans votre classe :
+Of course, in a very classical way, you can use any view of the template system. For example, to use the template ``resources/views/partials/steppers/custom.blade.php``, put the following code in your class:
 
 ```php
 use Axn\LaravelStepper\Stepper;
@@ -98,41 +103,42 @@ class BasicStepper extends Stepper
 }
 ```
 
-### Personnaliser un template
+### Personalize a template
 
-Les templates fournis sont plus des exemples pour comprendre comment utiliser le paquet que des templates à utiliser en production. Par exemple ils embarquent les styles CSS, ce qui n'est pas la meilleure des pratiques...
+All provided templates are more examples to understand how to use the package rather than production templates. 
+For example, CSS styles are embedded in templates, which is not a good practice.
 
-Il est donc possible de partir d'un de ces templates fournis par le package et de les modifier. Pour cela il faut publier les templates puis les modifier.
+It's possible to start from one of thoose templates provided with the package and to modify them. For that, you have to publish templates, then edit them.
 
-Pour publier les templates lancez la commande suivante :
+To publish all templates, use the following command: 
 
 ```
 php artisan vendor:publish
 ```
 
-Après cela vous trouverez les templates dans ``resources/views/vendor/stepper/`` ; il vous sera alors très simple de les modifier selon vos besoins.
+After this step, you'll find all templates in ``resources/views/vendor/stepper/``. It will be very easy to edit them depending on your needs.
 
-### Méthodes dans les templates
+### Methods in templates
 
-Afin de personnaliser votre template, différentes méthodes sont accessibles. Petit tour d'horizon...
+To personalize your templates, different methods are accessible. Here is the list:
 
-#### La classe Stepper
+#### Stepper class
 
-``{{ $stepper->getStep($stepName) }}`` retourne une étape, instance de StepInterface, selon un nom d'étape donné
+``{{ $stepper->getStep($stepName) }}`` return a step, instance of StepInterface, given the name of a step
 
-``{{ $stepper->getCurrentStep($stepName) }}`` retourne l'instance de l'étape courrante
+``{{ $stepper->getCurrentStep($stepName) }}`` return the instance of the current step
 
-``{{ $stepper->getPrevStep($stepName) }}`` retourne l'instance de l'étape précédente
+``{{ $stepper->getPrevStep($stepName) }}`` return the instance of the previous step
 
-``{{ $stepper->getNextStep($stepName) }}`` retourne l'instance de l'étape suivante
+``{{ $stepper->getNextStep($stepName) }}`` return the instance of the next step
 
-``{{ $stepper->stepExists($stepName) }}`` indique si une étape donnée par son nom existe
+``{{ $stepper->stepExists($stepName) }}`` get if a given step with it's name is existing
 
-``{{ $stepper->getNumSteps() }}`` indique le nombre d'étapes au total
+``{{ $stepper->getNumSteps() }}`` get the total number of steps
 
-``{{ $stepper->getCurrentStepName() }}`` indique le nom de l'étape courante
+``{{ $stepper->getCurrentStepName() }}`` get the name of the current step
 
-L'objet stepper implémente l'interface Iterator, il est donc possible de boucler facilement sur lui, chaque tour de boucle retournant une instance de StepInterface implémentée par la classe Step.
+The stepper object implements the Iterator's interface, so it's possible to loop easily on it. Every loop is returning an instance of StepInterface implemented by the Step class.
 
 ```php
 @foreach ($stepper as $step)
@@ -140,34 +146,35 @@ L'objet stepper implémente l'interface Iterator, il est donc possible de boucle
 @endforeach
 ```
 
-#### La classe Step (implémentation de StepInterface et plus si affinité)
+#### Step class (StepInterface implementation and more if you wish)
 
-``{{ $step->getName() }}`` retourne le nom associé à l'étape
+``{{ $step->getName() }}`` return the name associated to the step
 
-``{{ $step->getUrl() }}`` retourne l'URL associée à l'étape
+``{{ $step->getUrl() }}`` return the URL associated to the step
 
-``{{ $step->getRoute() }}`` retourne la route associée à l'étape
+``{{ $step->getRoute() }}`` return the route associated to the step
 
-``{{ $step->getPosition() }}`` retourne la position de l'étape
+``{{ $step->getPosition() }}`` return step's position
 
-``{{ $step->getTitle() }}`` retourne le titre associé à l'étape
+``{{ $step->getTitle() }}`` return the title associated to the step
 
-``{{ $step->getDescription() }}`` retourne la description associée à l'étape
+``{{ $step->getDescription() }}`` return the description associated to the step
 
-``{{ $step->isCurrent() }}`` indique si l'étape est l'étape courante
+``{{ $step->isCurrent() }}`` return if it's current step or no
 
-``{{ $step->isPassed() }}`` indique si l'étape est passée
+``{{ $step->isPassed() }}`` return if the step is in the past
 
-``{{ $step->isFirst() }}`` indique si l'étape est la première étape
+``{{ $step->isFirst() }}`` return if it's the first step
 
-``{{ $step->isLast() }}`` indique si l'étape est la dernière étape
+``{{ $step->isLast() }}`` return if it's the last step
 
 
-## Personnaliser les classes
+## Personalize classes
 
-Comme la classe concrête de notre stepper est une fille de la classe abstraite stepper, il est possible de surcharger les propriétées et méthodes de cette dernière.
+Because the concrete class of our stepper is a child of the abscract stepper class, it's possible to override properties and methods of that stepper class.
 
-Aussi il est possible de surcharger la classe Step assez facilement en implémentant l'interface StepInterface et en renseignant dans la classe stepper le nom de la classe Step à utiliser :
+It's also possible to override the Step class very easily by implementing the StepInterface interface and putting in the stepper class the name of the Step class to use:
+
 
 ```php
 use Axn\LaravelStepper\Stepper;
