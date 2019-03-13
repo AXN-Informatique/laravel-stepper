@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+1.3.0
+-----
+
+- Add data parameter to render method
+
 1.2.4
 -----
 

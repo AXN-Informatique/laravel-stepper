@@ -263,11 +263,11 @@ abstract class Stepper implements ArrayAccess, Countable, Iterator
         return $this->getCurrentStep();
     }
 
-    public function render()
+    public function render(array $data = [])
     {
         $this->compute();
 
-        return view($this->view, ['stepper' => $this]);
+        return view($this->view, ['stepper' => $this] + $data);
     }
 
     /**
