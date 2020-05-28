@@ -22,7 +22,8 @@ To install Laravel Stepper as a Composer package to be used with Laravel 5, simp
 composer require axn/laravel-stepper
 ```
 
-Once it's installed, you can register the service provider in `config/app.php`:
+Once it's installed, the package is automatically registered via Artisan command `package:discover` (Laravel >=5.5).
+If not, you must register the service provider in `config/app.php` by adding this line in `providers` section:
 
 ```
 'Axn\LaravelStepper\ServiceProvider',
