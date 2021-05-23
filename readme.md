@@ -4,7 +4,6 @@ Package that let you create a progress visualization tool step by step (stepper)
 
 - **Author:** AXN Informatique
 - **Website:** [http://www.axn-informatique.com/](http://www.axn-informatique.com/)
-- **Version:** 1.2.4
 - **License:** MIT license (see the license file)
 _____________________________________________________________________________________
 
