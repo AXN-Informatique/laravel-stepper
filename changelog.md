@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+1.5.0
+-----
+
+- Add support for Laravel 8
+
 1.4.0
 -----
 
