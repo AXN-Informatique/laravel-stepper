@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+1.6.0
+-----
+
+- Add support for Laravel 9
+
 1.5.0
 -----
 
