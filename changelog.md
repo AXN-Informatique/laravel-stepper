@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+1.7.0
+-----
+
+- Add support for Laravel 10
+
 1.6.0
 -----
 
