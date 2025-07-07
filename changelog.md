@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+1.8.0
+-----
+
+- Add support for Laravel 11 and 12
+
 1.7.0
 -----
 
