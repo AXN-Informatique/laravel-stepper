@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+1.9.0
+-----
+
+- Add support for Laravel 13
+
 1.8.0
 -----
 
